@@ -1,7 +1,35 @@
 var home =
 /******/ (function(modules) { // webpackBootstrap
+/******/ 	// install a JSONP callback for chunk loading
+/******/ 	var parentJsonpFunction = window["webpackJsonphome"];
+/******/ 	window["webpackJsonphome"] = function webpackJsonpCallback(chunkIds, moreModules) {
+/******/ 		// add "moreModules" to the modules object,
+/******/ 		// then flag all "chunkIds" as loaded and fire callback
+/******/ 		var moduleId, chunkId, i = 0, callbacks = [];
+/******/ 		for(;i < chunkIds.length; i++) {
+/******/ 			chunkId = chunkIds[i];
+/******/ 			if(installedChunks[chunkId])
+/******/ 				callbacks.push.apply(callbacks, installedChunks[chunkId]);
+/******/ 			installedChunks[chunkId] = 0;
+/******/ 		}
+/******/ 		for(moduleId in moreModules) {
+/******/ 			modules[moduleId] = moreModules[moduleId];
+/******/ 		}
+/******/ 		if(parentJsonpFunction) parentJsonpFunction(chunkIds, moreModules);
+/******/ 		while(callbacks.length)
+/******/ 			callbacks.shift().call(null, __webpack_require__);
+/******/
+/******/ 	};
+/******/
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
+/******/
+/******/ 	// object to store loaded and loading chunks
+/******/ 	// "0" means "already loaded"
+/******/ 	// Array means "loading", array contains callbacks
+/******/ 	var installedChunks = {
+/******/ 		0:0
+/******/ 	};
 /******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
@@ -27,6 +55,29 @@ var home =
 /******/ 		return module.exports;
 /******/ 	}
 /******/
+/******/ 	// This file contains only the entry chunk.
+/******/ 	// The chunk loading function for additional chunks
+/******/ 	__webpack_require__.e = function requireEnsure(chunkId, callback) {
+/******/ 		// "0" is the signal for "already loaded"
+/******/ 		if(installedChunks[chunkId] === 0)
+/******/ 			return callback.call(null, __webpack_require__);
+/******/
+/******/ 		// an array means "currently loading".
+/******/ 		if(installedChunks[chunkId] !== undefined) {
+/******/ 			installedChunks[chunkId].push(callback);
+/******/ 		} else {
+/******/ 			// start chunk loading
+/******/ 			installedChunks[chunkId] = [callback];
+/******/ 			var head = document.getElementsByTagName('head')[0];
+/******/ 			var script = document.createElement('script');
+/******/ 			script.type = 'text/javascript';
+/******/ 			script.charset = 'utf-8';
+/******/ 			script.async = true;
+/******/
+/******/ 			script.src = __webpack_require__.p + "" + chunkId + ".build.js";
+/******/ 			head.appendChild(script);
+/******/ 		}
+/******/ 	};
 /******/
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
@@ -35,7 +86,7 @@ var home =
 /******/ 	__webpack_require__.c = installedModules;
 /******/
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
+/******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -47,21 +98,21 @@ var home =
 
 	'use strict';
 	
-	__webpack_require__(1);
+	var _page = __webpack_require__(1);
 	
-	var _shownews = __webpack_require__(5);
-	
-	var _shownews2 = _interopRequireDefault(_shownews);
+	var _page2 = _interopRequireDefault(_page);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	if (true) {
-			(0, _shownews2.default)();
-	}
-	//exports.shownews = shownews;
-	
-	// let buttonclick =  function(){
-	// require.ensure([], function(require){
+	var button = document.getElementById('shownewsbutton');
+	button.onclick = function () {
+		button.setAttribute("style", "display:none");
+		__webpack_require__.e/* nsure */(1, function (require) {
+			var shownews = __webpack_require__(6);
+			var css = __webpack_require__(10);
+			shownews();
+		});
+	};
 
 /***/ },
 /* 1 */
@@ -73,14 +124,14 @@ var home =
 	var content = __webpack_require__(2);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(4)(content, {});
+	var update = __webpack_require__(5)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../node_modules/css-loader/index.js!./css.css", function() {
-				var newContent = require("!!./../node_modules/css-loader/index.js!./css.css");
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./page.less", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./page.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -98,7 +149,7 @@ var home =
 	
 	
 	// module
-	exports.push([module.id, ".page{\r\n    background-color:#D2E9F0;\r\n}\r\n\r\n@media (max-width: 2000px) { \r\n  .row{\r\n    margin: 0 auto;\r\n    width: 70%;\r\n    }\r\n}\r\n\r\n@media (max-width: 1259px) {\r\n  .row{\r\n    margin: 0 auto;\r\n    width: 80%;\r\n    }\r\n }\r\n\r\n @media (max-width: 779px) {\r\n  .row{\r\n    margin: 0 auto;\r\n    width: 90%;\r\n    }\r\n }\r\n\r\n .header{\r\n    font-size: 40px;\r\n    color: #00008B;\r\n    text-align: center;\r\n    font-weight:bold;\r\n}\r\n.row { \r\n    height: 120px; \r\n    background: #F5F5F5;\r\n    padding: 5px;\r\n    padding-right: 20px; \r\n    border: solid 1px black; \r\n    position:relative;\r\n   }\r\n\r\n.img{\r\n    width: 10%;\r\n    float: left;\r\n}\r\n\r\n.newsapilink{\r\n    text-align: right;\r\n    font-weight: bold;\r\n}\r\n\r\n.button {\r\n    background-color: #555555;\r\n    border: none;\r\n    color: white;\r\n    padding: 15px 32px;\r\n    text-align: center;\r\n    text-decoration: none;\r\n    display: inline-block;\r\n    font-size: 16px;\r\n}", ""]);
+	exports.push([module.id, ".page {\n  background: url(" + __webpack_require__(4) + ");\n}\n.newsapilink {\n  text-align: right;\n  font-weight: bold;\n}\n.button {\n  background-color: #555555;\n  border: none;\n  color: white;\n  padding: 15px 32px;\n  text-align: center;\n  text-decoration: none;\n  display: inline-block;\n  font-size: 16px;\n}\n.link {\n  color: #000000;\n  font-weight: bold;\n  font-size: 20px;\n  padding-left: 5px;\n}\n", ""]);
 	
 	// exports
 
@@ -160,6 +211,12 @@ var home =
 
 /***/ },
 /* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "src/pics/background.jpg";
+
+/***/ },
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -409,139 +466,6 @@ var home =
 			URL.revokeObjectURL(oldSrc);
 	}
 
-
-/***/ },
-/* 5 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	exports.default = function () {
-		var request = 'https://newsapi.org/v1/articles?source=bbc-news&apiKey=fb92b4b2a88144d59dfb7d1dc04f25d4';
-		(0, _getnews2.default)(request);
-	};
-	
-	var _getnews = __webpack_require__(6);
-	
-	var _getnews2 = _interopRequireDefault(_getnews);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/***/ },
-/* 6 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	
-	exports.default = function (request) {
-	    //let createnews = require('./createnews');
-	    fetch(request).then(function (response) {
-	        if (response.ok) {
-	            response.json().then(function (data) {
-	                return (0, _createnews2.default)(data);
-	            });
-	        } else {
-	            console.log('Network response was not ok.');
-	        }
-	    }).catch(function (error) {
-	        return console.log('There has been a problem with your fetch operation: ' + error.message);
-	    });
-	};
-	
-	var _createnews = __webpack_require__(7);
-	
-	var _createnews2 = _interopRequireDefault(_createnews);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	;
-
-/***/ },
-/* 7 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-	                 value: true
-	});
-	
-	exports.default = function (response) {
-	
-	                 var divNews = document.createElement('div');
-	                 divNews.setAttribute("class", "body");
-	                 var header = document.createElement('div');
-	                 header.innerHTML = response.source;
-	                 header.setAttribute("class", "header");
-	                 divNews.appendChild(header);
-	
-	                 document.body.appendChild(divNews);
-	                 var ul = document.createElement('ul');
-	                 divNews.appendChild(ul);
-	
-	                 var _iteratorNormalCompletion = true;
-	                 var _didIteratorError = false;
-	                 var _iteratorError = undefined;
-	
-	                 try {
-	                                  for (var _iterator = response.articles[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-	                                                   var value = _step.value;
-	
-	                                                   var div = document.createElement('div');
-	                                                   div.setAttribute("class", "row");
-	                                                   ul.appendChild(div);
-	                                                   var li = document.createElement('li');
-	                                                   div.appendChild(li);
-	
-	                                                   var img = document.createElement('img');
-	                                                   img.setAttribute("src", "" + value.urlToImage);
-	                                                   img.setAttribute("class", "img");
-	                                                   li.appendChild(img);
-	
-	                                                   var strong = document.createElement('strong');
-	                                                   li.appendChild(strong);
-	
-	                                                   var a = document.createElement('a');
-	                                                   a.setAttribute("href", "" + value.url);
-	                                                   a.innerHTML = value.description + " ";
-	                                                   strong.appendChild(a);
-	
-	                                                   var p = document.createElement('p');
-	                                                   li.appendChild(p);
-	                                                   var node = document.createTextNode("" + value.title);
-	                                                   p.appendChild(node);
-	
-	                                                   var publishedAt = document.createElement('div');
-	                                                   publishedAt.innerHTML = "Publish at: " + ("" + value.publishedAt);
-	                                                   li.appendChild(publishedAt);
-	
-	                                                   var publishedAt = document.createElement('div');
-	                                                   publishedAt.innerHTML = "By: " + ("" + value.author);
-	                                                   li.appendChild(publishedAt);
-	                                  }
-	                 } catch (err) {
-	                                  _didIteratorError = true;
-	                                  _iteratorError = err;
-	                 } finally {
-	                                  try {
-	                                                   if (!_iteratorNormalCompletion && _iterator.return) {
-	                                                                    _iterator.return();
-	                                                   }
-	                                  } finally {
-	                                                   if (_didIteratorError) {
-	                                                                    throw _iteratorError;
-	                                                   }
-	                                  }
-	                 }
-	};
 
 /***/ }
 /******/ ]);

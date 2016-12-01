@@ -1,16 +1,18 @@
 'use strict'
 const ENV = process.env.ENV || 'development';
 const webpack = require('webpack');
+var path = require("path");
 
 module.exports = {
-	entry: "./srс/home",
+	entry: "./src/js/home",
 	output: {
     	path: __dirname + "/dist",
+    	publicPath: '/',
         filename: "build.js",
         library: "home"
     },
 
-   // watch: ENV == 'development', 
+  // watch: ENV == 'development',  
 
     //watchOptions: {
     //	aggregateTimeout: 300
@@ -27,19 +29,30 @@ module.exports = {
 	],
 
 	module: {
-		loaders: [{
+		loaders: [
+    {
 			test: /\.js$/,
 			loader: 'babel-loader?presets[]=es2015',
-			//exclude: /node_modules/ 
-			// query: {
-			//presets:["es2015"], 
-			//	optional:["runtime"]
-			//}
-			},
-			{ 
-			test: /\.css$/,
-			loader: 'style!css',
-			},
-			]
+		},
+    { 
+      test: /\.css$/, 
+      loader: "style-loader!css-loader"
+    }, 
+    { 
+      test: /\.less$/, 
+      loader: "style-loader!css-loader!less-loader" 
+    },
+    { 
+     	test: /\.(png|jpg)$/, 
+      loader: "url-loader?name=[path][name].[ext]&limit=500" 
+    },                 	
+    ]	
 	},
+
+devServer: {
+    host: 'localhost',
+    port: 9080,
+    contentBase:__dirname + "/dist"
+     }
+     
 };
