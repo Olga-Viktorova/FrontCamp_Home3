@@ -1,4 +1,3 @@
-'use strict'
 const ENV = process.env.ENV || 'development';
 const webpack = require('webpack');
 var path = require("path");
@@ -6,7 +5,7 @@ var path = require("path");
 module.exports = {
 	entry: "./src/js/home",
 	output: {
-    	path: __dirname + "/dist",
+    	path: __dirname + "/docs",
     	//publicPath: '/',
         filename: "build.js",
         library: "home"
@@ -52,7 +51,7 @@ module.exports = {
 devServer: {
     host: 'localhost',
     port: 9080,
-    contentBase:__dirname + "/dist"
+    contentBase:__dirname + "/docs"
      }
      
 };
