@@ -104,15 +104,18 @@ var home =
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	//import test from '../testjson/test.json';
 	var button = document.getElementById('shownewsbutton');
 	button.onclick = function () {
 		button.setAttribute("style", "display:none");
 		__webpack_require__.e/* nsure */(1, function (require) {
-			var shownews = __webpack_require__(6);
-			var css = __webpack_require__(10);
+			var shownews = __webpack_require__(7);
+			var css = __webpack_require__(11);
 			shownews();
 		});
 	};
+	
+	var shownews = __webpack_require__(6);
 
 /***/ },
 /* 1 */
@@ -466,6 +469,12 @@ var home =
 			URL.revokeObjectURL(oldSrc);
 	}
 
+
+/***/ },
+/* 6 */
+/***/ function(module, exports) {
+
+	module.exports = {"ddd2":2,"ddd3":"3","dsfsfd3":"asdfsdfs5"};
 
 /***/ }
 /******/ ]);

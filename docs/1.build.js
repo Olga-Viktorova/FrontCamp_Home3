@@ -5,12 +5,13 @@ webpackJsonphome([1],[
 /* 3 */,
 /* 4 */,
 /* 5 */,
-/* 6 */
+/* 6 */,
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _getnews = __webpack_require__(7);
+	var _getnews = __webpack_require__(8);
 	
 	var _getnews2 = _interopRequireDefault(_getnews);
 	
@@ -22,7 +23,7 @@ webpackJsonphome([1],[
 	};
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -45,7 +46,7 @@ webpackJsonphome([1],[
 	    });
 	};
 	
-	var _createnews = __webpack_require__(8);
+	var _createnews = __webpack_require__(9);
 	
 	var _createnews2 = _interopRequireDefault(_createnews);
 	
@@ -54,7 +55,7 @@ webpackJsonphome([1],[
 	;
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -68,7 +69,7 @@ webpackJsonphome([1],[
 	                 var divNews = document.createElement('div');
 	                 divNews.setAttribute("class", "body");
 	
-	                 var newsLogo = __webpack_require__(9);
+	                 var newsLogo = __webpack_require__(10);
 	                 var imgLogo = document.createElement('img');
 	                 imgLogo.src = newsLogo;
 	                 imgLogo.setAttribute("class", "logo");
@@ -141,19 +142,19 @@ webpackJsonphome([1],[
 	};
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "src/pics/bbc_news_logo.png";
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(11);
+	var content = __webpack_require__(12);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(5)(content, {});
@@ -173,7 +174,7 @@ webpackJsonphome([1],[
 	}
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(3)();

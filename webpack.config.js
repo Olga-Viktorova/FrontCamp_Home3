@@ -44,7 +44,11 @@ module.exports = {
     { 
      	test: /\.(png|jpg)$/, 
       loader: "url-loader?name=[path][name].[ext]&limit=500" 
-    },                 	
+    }, 
+    {
+      test: /\.json$/,
+      loader: __dirname + "/src/js/customLoader!json-loader"
+    },             	
     ]	
 	},
 
