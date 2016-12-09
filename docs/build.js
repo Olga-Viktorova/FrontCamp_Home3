@@ -110,7 +110,6 @@ var home =
 		button.setAttribute("style", "display:none");
 		__webpack_require__.e/* nsure */(1, function (require) {
 			var shownews = __webpack_require__(7);
-			var css = __webpack_require__(11);
 			shownews();
 		});
 	};

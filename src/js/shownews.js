@@ -1,6 +1,7 @@
-import getnews from './getnews'; 
+import NewsLoaderThroughNewsApiFactory from './NewsLoaderThroughNewsApiFactory';
 
 module.exports =  function() {
-	const request = 'https://newsapi.org/v1/articles?source=bbc-news&apiKey=fb92b4b2a88144d59dfb7d1dc04f25d4';
-	getnews(request);
+	let css = require('../style/news.less');
+	let news = new NewsLoaderThroughNewsApiFactory();
+	news.getNews();
 }
