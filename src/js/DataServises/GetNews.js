@@ -1,10 +1,8 @@
-import createnews from './createnews';
-
 export default function(request){
-	fetch(request)
+	return fetch(request)
   .then(function (response) {
       if (response.ok) {
-           response.json().then((data) => createnews(data));     
+      	 return response.json();
        } else {
            console.log('Network response was not ok.');
        }

@@ -102,19 +102,16 @@ var home =
 	
 	var _page2 = _interopRequireDefault(_page);
 	
+	var _Controller = __webpack_require__(6);
+	
+	var _Controller2 = _interopRequireDefault(_Controller);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	//import test from '../testjson/test.json';
-	var button = document.getElementById('shownewsbutton');
-	button.onclick = function () {
-		button.setAttribute("style", "display:none");
-		__webpack_require__.e/* nsure */(1, function (require) {
-			var shownews = __webpack_require__(7);
-			shownews();
-		});
-	};
+	var controller = new _Controller2.default();
+	controller.index();
 	
-	var shownews = __webpack_require__(6);
+	//let shownews = require('../testjson/test.json');
 
 /***/ },
 /* 1 */
@@ -151,7 +148,7 @@ var home =
 	
 	
 	// module
-	exports.push([module.id, ".page {\n  background: url(" + __webpack_require__(4) + ");\n}\n.newsapilink {\n  text-align: right;\n  font-weight: bold;\n}\n.button {\n  background-color: #555555;\n  border: none;\n  color: white;\n  padding: 15px 32px;\n  text-align: center;\n  text-decoration: none;\n  display: inline-block;\n  font-size: 16px;\n}\n.link {\n  color: #000000;\n  font-weight: bold;\n  font-size: 20px;\n  padding-left: 5px;\n}\n", ""]);
+	exports.push([module.id, ".page {\n  background: url(" + __webpack_require__(4) + ");\n  background-size: cover;\n}\n.newsapilink {\n  text-align: right;\n  font-weight: bold;\n}\n.button {\n  background-color: #555555;\n  border: none;\n  color: white;\n  padding: 15px 32px;\n  text-align: center;\n  text-decoration: none;\n  display: inline-block;\n  font-size: 16px;\n}\n.link {\n  color: #000000;\n  font-weight: bold;\n  font-size: 20px;\n  padding-left: 5px;\n}\n", ""]);
 	
 	// exports
 
@@ -471,9 +468,573 @@ var home =
 
 /***/ },
 /* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _page = __webpack_require__(1);
+	
+	var _page2 = _interopRequireDefault(_page);
+	
+	var _Subject = __webpack_require__(7);
+	
+	var _Subject2 = _interopRequireDefault(_Subject);
+	
+	var _NewsLoaderThroughNewsApiFactory = __webpack_require__(9);
+	
+	var _NewsLoaderThroughNewsApiFactory2 = _interopRequireDefault(_NewsLoaderThroughNewsApiFactory);
+	
+	var _View = __webpack_require__(13);
+	
+	var _View2 = _interopRequireDefault(_View);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var Controller = function () {
+		function Controller() {
+			_classCallCheck(this, Controller);
+		}
+	
+		_createClass(Controller, [{
+			key: 'index',
+			value: function index() {
+				var button = document.getElementById('shownewsbutton');
+	
+				this.extend(button, new _Subject2.default());
+	
+				button.onclick = function () {
+					button.notify('click');
+				};
+				button.onclick = this.addNewObserver;
+			}
+		}, {
+			key: 'extend',
+			value: function extend(obj, extension) {
+				for (var key in extension) {
+					obj[key] = extension[key];
+				}
+			}
+		}, {
+			key: 'addNewObserver',
+			value: function addNewObserver() {
+				__webpack_require__.e/* nsure */(1, function (require) {
+	
+					var css = __webpack_require__(17);
+					var newsLoader = new _NewsLoaderThroughNewsApiFactory2.default();
+	
+					newsLoader.getNews().then(function (result) {
+						var view = new _View2.default();
+						view.showPage(result);
+					}).catch(function (error) {
+						console.log(error);
+					});
+				});
+			}
+		}]);
+	
+		return Controller;
+	}();
+	
+	exports.default = Controller;
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = Subject;
+	
+	var _ObserverList = __webpack_require__(8);
+	
+	var _ObserverList2 = _interopRequireDefault(_ObserverList);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function Subject() {
+	  this.observers = new _ObserverList2.default();
+	}
+	
+	Subject.prototype.addObserver = function (observer) {
+	  this.observers.add(observer);
+	};
+	
+	Subject.prototype.removeObserver = function (observer) {
+	  this.observers.removeAt(this.observers.indexOf(observer, 0));
+	};
+	
+	Subject.prototype.notify = function (context) {
+	  var observerCount = this.observers.count();
+	  for (var i = 0; i < observerCount; i++) {
+	    this.observers.get(i).update(context);
+	  }
+	};
+
+/***/ },
+/* 8 */
 /***/ function(module, exports) {
 
-	module.exports = {"ddd2":2,"ddd3":"3","dsfsfd3":"asdfsdfs5"};
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = ObserverList;
+	function ObserverList() {
+	  this.observerList = [];
+	}
+	
+	ObserverList.prototype.add = function (obj) {
+	  return this.observerList.push(obj);
+	};
+	
+	ObserverList.prototype.count = function () {
+	  return this.observerList.length;
+	};
+	
+	ObserverList.prototype.get = function (index) {
+	  if (index > -1 && index < this.observerList.length) {
+	    return this.observerList[index];
+	  }
+	};
+	
+	ObserverList.prototype.indexOf = function (obj, startIndex) {
+	  var i = startIndex;
+	
+	  while (i < this.observerList.length) {
+	    if (this.observerList[i] === obj) {
+	      return i;
+	    }
+	    i++;
+	  }
+	
+	  return -1;
+	};
+	
+	ObserverList.prototype.removeAt = function (index) {
+	  this.observerList.splice(index, 1);
+	};
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _GetNews = __webpack_require__(10);
+	
+	var _GetNews2 = _interopRequireDefault(_GetNews);
+	
+	var _News = __webpack_require__(11);
+	
+	var _News2 = _interopRequireDefault(_News);
+	
+	var _NewsLoaderFactory2 = __webpack_require__(12);
+	
+	var _NewsLoaderFactory3 = _interopRequireDefault(_NewsLoaderFactory2);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var NewsLoaderThroughNewsApiFactory = function (_NewsLoaderFactory) {
+		_inherits(NewsLoaderThroughNewsApiFactory, _NewsLoaderFactory);
+	
+		function NewsLoaderThroughNewsApiFactory() {
+			_classCallCheck(this, NewsLoaderThroughNewsApiFactory);
+	
+			return _possibleConstructorReturn(this, (NewsLoaderThroughNewsApiFactory.__proto__ || Object.getPrototypeOf(NewsLoaderThroughNewsApiFactory)).call(this));
+		}
+	
+		_createClass(NewsLoaderThroughNewsApiFactory, [{
+			key: 'getNews',
+			value: function getNews() {
+				var request = 'https://newsapi.org/v1/articles?source=bbc-news&apiKey=fb92b4b2a88144d59dfb7d1dc04f25d4';
+				return (0, _GetNews2.default)(request).then(function (data) {
+					var news = [];
+					var _iteratorNormalCompletion = true;
+					var _didIteratorError = false;
+					var _iteratorError = undefined;
+	
+					try {
+						for (var _iterator = data.articles[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+							var value = _step.value;
+	
+							var currentNews = new _News2.default();
+							currentNews.createNews(value);
+							news.push(currentNews);
+						}
+					} catch (err) {
+						_didIteratorError = true;
+						_iteratorError = err;
+					} finally {
+						try {
+							if (!_iteratorNormalCompletion && _iterator.return) {
+								_iterator.return();
+							}
+						} finally {
+							if (_didIteratorError) {
+								throw _iteratorError;
+							}
+						}
+					}
+	
+					return news;
+				}).catch(function (error) {
+					console.log(error);
+				});
+			}
+		}]);
+	
+		return NewsLoaderThroughNewsApiFactory;
+	}(_NewsLoaderFactory3.default);
+	
+	exports.default = NewsLoaderThroughNewsApiFactory;
+
+/***/ },
+/* 10 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (request) {
+	    return fetch(request).then(function (response) {
+	        if (response.ok) {
+	            return response.json();
+	        } else {
+	            console.log('Network response was not ok.');
+	        }
+	    }).catch(function (error) {
+	        return console.log('There has been a problem with your fetch operation: ' + error.message);
+	    });
+	};
+	
+	;
+
+/***/ },
+/* 11 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var News = function () {
+		function News() {
+			_classCallCheck(this, News);
+		}
+	
+		_createClass(News, [{
+			key: "createNews",
+			value: function createNews(data) {
+				this.urlToImage = data.urlToImage;
+				this.url = data.url;
+				this.title = data.title;
+				this.publishedAt = data.publishedAt;
+				this.author = data.author;
+				this.description = data.description;
+			}
+		}]);
+	
+		return News;
+	}();
+	
+	exports.default = News;
+
+/***/ },
+/* 12 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var NewsLoaderFactory = function () {
+		function NewsLoaderFactory() {
+			_classCallCheck(this, NewsLoaderFactory);
+		}
+	
+		_createClass(NewsLoaderFactory, [{
+			key: "getNews",
+			value: function getNews() {}
+		}]);
+	
+		return NewsLoaderFactory;
+	}();
+	
+	exports.default = NewsLoaderFactory;
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _LikeDecorator = __webpack_require__(14);
+	
+	var _LikeDecorator2 = _interopRequireDefault(_LikeDecorator);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var View = function () {
+	  function View() {
+	    _classCallCheck(this, View);
+	  }
+	
+	  _createClass(View, [{
+	    key: 'showPage',
+	    value: function showPage(listNews) {
+	      var divNews = document.createElement('div');
+	      divNews.setAttribute("class", "body");
+	
+	      var newsLogo = __webpack_require__(16);
+	      var imgLogo = document.createElement('img');
+	      imgLogo.src = newsLogo;
+	      imgLogo.setAttribute("class", "logo");
+	
+	      var header = document.createElement('div');
+	      header.setAttribute("class", "header");
+	      header.appendChild(imgLogo);
+	
+	      divNews.appendChild(header);
+	
+	      document.body.appendChild(divNews);
+	      var divlistNews = document.createElement('div');
+	      divNews.appendChild(divlistNews);
+	
+	      var _iteratorNormalCompletion = true;
+	      var _didIteratorError = false;
+	      var _iteratorError = undefined;
+	
+	      try {
+	        for (var _iterator = listNews[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	          var value = _step.value;
+	
+	
+	          var rowNews = this.showNews(value, divlistNews);
+	          var likeDecorator = new _LikeDecorator2.default(value);
+	          likeDecorator.createNews(value);
+	          likeDecorator.showNews(rowNews);
+	        }
+	      } catch (err) {
+	        _didIteratorError = true;
+	        _iteratorError = err;
+	      } finally {
+	        try {
+	          if (!_iteratorNormalCompletion && _iterator.return) {
+	            _iterator.return();
+	          }
+	        } finally {
+	          if (_didIteratorError) {
+	            throw _iteratorError;
+	          }
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'showNews',
+	    value: function showNews(news, ul) {
+	      var div = document.createElement('div');
+	      div.setAttribute("class", "row");
+	      ul.appendChild(div);
+	      var li = document.createElement('div');
+	      div.appendChild(li);
+	
+	      var img = document.createElement('img');
+	      img.setAttribute("src", news.urlToImage);
+	      img.setAttribute("class", "img");
+	      li.appendChild(img);
+	
+	      var strong = document.createElement('strong');
+	      li.appendChild(strong);
+	
+	      var a = document.createElement('a');
+	      a.setAttribute("href", news.urlToImage);
+	      a.setAttribute("class", "link");
+	      a.innerHTML = news.description;
+	      strong.appendChild(a);
+	
+	      var p = document.createElement('p');
+	      li.appendChild(p);
+	      var node = document.createTextNode(news.title);
+	      p.appendChild(node);
+	
+	      var publishedAt = document.createElement('div');
+	      publishedAt.innerHTML = "Publish at: " + news.publishedAt;
+	      li.appendChild(publishedAt);
+	
+	      var publishedAt = document.createElement('div');
+	      publishedAt.innerHTML = "By: " + news.author;
+	      li.appendChild(publishedAt);
+	
+	      return div;
+	    }
+	  }]);
+	
+	  return View;
+	}();
+	
+	exports.default = View;
+
+/***/ },
+/* 14 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+	
+	var _Decorator2 = __webpack_require__(15);
+	
+	var _Decorator3 = _interopRequireDefault(_Decorator2);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var LikeDecorator = function (_Decorator) {
+		_inherits(LikeDecorator, _Decorator);
+	
+		function LikeDecorator(news) {
+			_classCallCheck(this, LikeDecorator);
+	
+			return _possibleConstructorReturn(this, (LikeDecorator.__proto__ || Object.getPrototypeOf(LikeDecorator)).call(this, news));
+		}
+	
+		_createClass(LikeDecorator, [{
+			key: 'createNews',
+			value: function createNews(data) {
+				_get(LikeDecorator.prototype.__proto__ || Object.getPrototypeOf(LikeDecorator.prototype), 'createNews', this).call(this, data);
+				this.CountLike = 1;
+			}
+		}, {
+			key: 'showNews',
+			value: function showNews(ul) {
+				var likebutton = document.createElement('button');
+				likebutton.setAttribute("class", "likebutton");
+				likebutton.innerHTML = "Like";
+				ul.appendChild(likebutton);
+			}
+		}]);
+	
+		return LikeDecorator;
+	}(_Decorator3.default);
+	
+	exports.default = LikeDecorator;
+
+/***/ },
+/* 15 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _News2 = __webpack_require__(11);
+	
+	var _News3 = _interopRequireDefault(_News2);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Decorator = function (_News) {
+		_inherits(Decorator, _News);
+	
+		function Decorator(news) {
+			_classCallCheck(this, Decorator);
+	
+			var _this = _possibleConstructorReturn(this, (Decorator.__proto__ || Object.getPrototypeOf(Decorator)).call(this));
+	
+			_this.news = news;
+			return _this;
+		}
+	
+		_createClass(Decorator, [{
+			key: 'createNews',
+			value: function createNews(data) {
+				this.news.createNews(data);
+			}
+		}, {
+			key: 'showNews',
+			value: function showNews(ul) {
+				this.news.showNews(ul);
+			}
+		}]);
+	
+		return Decorator;
+	}(_News3.default);
+	
+	exports.default = Decorator;
+
+/***/ },
+/* 16 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "src/pics/bbc_news_logo.png";
 
 /***/ }
 /******/ ]);

@@ -5,12 +5,16 @@ export default class LikeDecorator extends Decorator{
 		super(news);
 	}
 
+	createNews(data)
+	{
+		super.createNews(data);
+		this.CountLike = 1;
+	}
 
-	showNews(ul){
-		super.showNews(ul);
+	showNews(div){
 		var likebutton = document.createElement('button')
 		likebutton.setAttribute("class", "likebutton");
-        likebutton.innerHTML = "Like"
-        ul.appendChild(likebutton);  
+        likebutton.innerHTML = "Like";
+        div.appendChild(likebutton);  
 	}
 }

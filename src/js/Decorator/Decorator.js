@@ -1,4 +1,4 @@
-import News from './News';
+import News from '../Models/News';
 
 export default class Decorator extends News {
 	constructor(news){
