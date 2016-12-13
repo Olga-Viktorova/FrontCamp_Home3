@@ -964,11 +964,11 @@ var home =
 			}
 		}, {
 			key: 'showNews',
-			value: function showNews(ul) {
+			value: function showNews(div) {
 				var likebutton = document.createElement('button');
 				likebutton.setAttribute("class", "likebutton");
 				likebutton.innerHTML = "Like";
-				ul.appendChild(likebutton);
+				div.appendChild(likebutton);
 			}
 		}]);
 	
